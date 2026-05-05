@@ -85,7 +85,7 @@ exports.handler = async (event, context) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+        'Authorization': `Bearer ${process.env.sk-d7f5b9ae0a784d9ba7d108ccb39ffa52}`,
       },
       body: JSON.stringify({
         model: 'deepseek-chat',
