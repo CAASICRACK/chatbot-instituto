@@ -371,173 +371,26 @@
 
   <script>
     // ================================================================
-    //  BASE DE DATOS DE PREGUNTAS FRECUENTES
-    //  ---------------------------------------------------------------
-    //  Cómo personalizar:
-    //   1. Cambia el valor de "respuesta" por el texto real de tu instituto.
-    //   2. Añade o quita palabras en "keywords" para que el bot detecte
-    //      más variantes de la misma pregunta.
-    //   3. Duplica un bloque completo { keywords, respuesta } para agregar
-    //      una nueva categoría de pregunta.
-    // ================================================================
-    const FAQ = [
-      {
-        // ── CATEGORÍA: Inscripciones / Admisión ──────────────────────
-        keywords: ["inscripcion", "inscripciones", "matricula", "matriculas",
-                   "registro", "admision", "postular", "ingresar", "requisito",
-                   "requisitos", "documentos", "proceso de admision"],
-        respuesta: `Para inscribirte necesitas:
-• DNI o pasaporte vigente
-• Certificado de estudios secundarios
-• 2 fotos tamaño carnet
-
-Las inscripciones están abiertas del <strong>1 al 30 de cada mes</strong> en Secretaría (planta baja), de lunes a viernes de 8:00 a 17:00 h.<br><br>
-También puedes iniciar el proceso en línea desde nuestra web o escribiendo a <a href="mailto:admision@instituto.edu">admision@instituto.edu</a>`
-      },
-      {
-        // ── CATEGORÍA: Costos / Aranceles ────────────────────────────
-        keywords: ["costo", "costos", "precio", "precios", "arancel",
-                   "aranceles", "mensualidad", "cuota", "pago", "pagos",
-                   "beca", "becas", "financiamiento", "cuanto cuesta"],
-        respuesta: `Los costos varían según la carrera. Aquí un resumen orientativo:
-
-• Matrícula inicial: <strong>S/ 350</strong>
-• Mensualidad técnica (2 años): <strong>S/ 280 – S/ 380 /mes</strong>
-• Mensualidad universitaria (4 años): <strong>S/ 450 – S/ 600 /mes</strong>
-
-Disponemos de <strong>becas parciales</strong> por rendimiento académico y convenios de pago. Consulta en caja o escribe a <a href="mailto:tesoreria@instituto.edu">tesoreria@instituto.edu</a>`
-      },
-      {
-        // ── CATEGORÍA: Carreras / Programas ──────────────────────────
-        keywords: ["carrera", "carreras", "programa", "programas",
-                   "especialidad", "especialidades", "que estudiar",
-                   "oferta academica", "que ofrecen", "cursos", "tecnico",
-                   "universitario", "posgrado"],
-        respuesta: `Ofrecemos las siguientes carreras:
-
-<strong>Técnicas (2 años)</strong>
-• Administración de Empresas
-• Contabilidad
-• Diseño Gráfico Digital
-• Enfermería Técnica
-
-<strong>Universitarias (4 años)</strong>
-• Ingeniería de Sistemas
-• Administración y Marketing
-• Psicología
-
-Visita nuestra web para ver el plan de estudios completo de cada carrera.`
-      },
-      {
-        // ── CATEGORÍA: Horarios ──────────────────────────────────────
-        keywords: ["horario", "horarios", "turno", "turnos", "clases",
-                   "nocturno", "diurno", "sabatino", "fin de semana",
-                   "cuando hay clases", "cuando empieza"],
-        respuesta: `Manejamos tres turnos para que puedas estudiar sin conflictos:
-
-• <strong>Mañana:</strong> 7:00 – 13:00 h
-• <strong>Tarde:</strong> 13:00 – 19:00 h
-• <strong>Noche:</strong> 19:00 – 22:30 h (lun – vie)
-• <strong>Sabatino:</strong> 8:00 – 14:00 h (sáb – dom)
-
-Secretaría atiende de <strong>lunes a viernes 8:00 – 20:00 h</strong> y <strong>sábados 8:00 – 13:00 h</strong>.`
-      },
-      {
-        // ── CATEGORÍA: Ubicación / Dirección ─────────────────────────
-        keywords: ["ubicacion", "direccion", "donde estan", "donde queda",
-                   "como llegar", "sede", "campus", "local", "lugar",
-                   "mapa", "direccion"],
-        respuesta: `Nuestra sede principal está en:<br><br>
-<strong>Av. Universitaria 1450, Piso 3, San Miguel</strong><br><br>
-📍 A 2 cuadras del Metropolitano – Estación Honorio Delgado.<br>
-🚌 Líneas de bus: 54, 78, C-4.<br><br>
-<a href="https://maps.google.com" target="_blank">Ver en Google Maps →</a>`
-      },
-      {
-        // ── CATEGORÍA: Contacto ──────────────────────────────────────
-        keywords: ["contacto", "telefono", "correo", "email", "llamar",
-                   "whatsapp", "comunicarme", "hablar", "atencion",
-                   "soporte", "ayuda"],
-        respuesta: `Puedes contactarnos por cualquiera de estos canales:
-
-📞 <strong>Teléfono:</strong> +51 1 234-5678<br>
-📱 <strong>WhatsApp:</strong> +51 987 654 321<br>
-📧 <strong>Email:</strong> <a href="mailto:info@instituto.edu">info@instituto.edu</a><br><br>
-Horario de atención: <strong>Lun – Vie 8:00 – 19:00 h</strong>`
-      },
-      {
-        // ── CATEGORÍA: Modalidad virtual / online ────────────────────
-        keywords: ["virtual", "online", "remoto", "a distancia",
-                   "plataforma", "zoom", "internet", "en casa"],
-        respuesta: `¡Sí ofrecemos modalidad virtual! Todas nuestras carreras cuentan con opción <strong>semipresencial</strong>:
-
-• Clases en vivo por Zoom + grabaciones
-• Plataforma LMS propia (acceso 24/7)
-• Prácticas presenciales programadas
-• Soporte técnico incluido
-
-Para más información escríbenos a <a href="mailto:virtual@instituto.edu">virtual@instituto.edu</a>`
-      }
-    ];
-
-    // ================================================================
     //  PREGUNTAS RÁPIDAS (botones de acceso directo)
-    //  Puedes cambiar las etiquetas o los textos que se envían al hacer clic
     // ================================================================
     const QUICK_QUESTIONS = [
-      { label: "📋 Inscripciones", text: "inscripciones" },
-      { label: "⏰ Horarios",      text: "horarios"      },
-      { label: "📍 Ubicación",     text: "ubicacion"     }
+      { label: "📚 Carreras",     text: "¿Qué carreras ofrecen?" },
+      { label: "💶 Tasas",        text: "¿Cuánto cuestan las tasas de los títulos?" },
+      { label: "📍 Ubicación",    text: "¿Dónde está el instituto?" }
     ];
 
     // ================================================================
     //  MENSAJE DE BIENVENIDA
     // ================================================================
-    const WELCOME_MSG = `¡Hola! 👋 Soy el asistente virtual del <strong>Instituto</strong>.<br>
-Estoy aquí para resolver tus dudas sobre carreras, inscripciones, costos y más.<br><br>
+    const WELCOME_MSG = `¡Hola! 👋 Soy el asistente virtual del <strong>IES Albalat</strong>.<br>
+Estoy aquí para resolver tus dudas sobre carreras, trámites, becas y mucho más.<br><br>
 ¿En qué puedo ayudarte hoy?`;
 
-    // ================================================================
-    //  RESPUESTA FALLBACK (cuando no hay coincidencia)
-    // ================================================================
-    const FALLBACK_MSG = `Hmm, no encontré información exacta sobre eso. 🤔<br><br>
-Para una respuesta personalizada puedes contactarnos:<br>
-📞 <strong>+51 1 234-5678</strong><br>
-📧 <a href="mailto:info@instituto.edu">info@instituto.edu</a><br>
-📱 <strong>WhatsApp:</strong> +51 987 654 321`;
+    // (El mensaje de error se maneja directamente en la función botReply)
 
     // ================================================================
-    //  LÓGICA DEL CHATBOT  –  No es necesario editar debajo de aquí
+    //  LÓGICA DEL CHATBOT
     // ================================================================
-
-    // Normaliza texto: minúsculas + sin tildes
-    function normalize(str) {
-      return str.toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z0-9 ]/g, " ");
-    }
-
-    // Busca la mejor coincidencia en el FAQ
-    function findAnswer(input) {
-      const words = normalize(input).split(/\s+/).filter(Boolean);
-      let bestScore = 0, bestEntry = null;
-
-      for (const entry of FAQ) {
-        let score = 0;
-        for (const kw of entry.keywords) {
-          const normKw = normalize(kw);
-          for (const w of words) {
-            if (normKw.includes(w) || w.includes(normKw)) score++;
-          }
-          // Exact phrase match bonus
-          if (normalize(input).includes(normKw)) score += 2;
-        }
-        if (score > bestScore) { bestScore = score; bestEntry = entry; }
-      }
-
-      return bestScore > 0 ? bestEntry.respuesta : null;
-    }
 
     // DOM refs
     const toggleBtn  = document.getElementById("chat-toggle");
@@ -621,7 +474,7 @@ Para una respuesta personalizada puedes contactarnos:<br>
       } catch (error) {
         removeTyping();
         appendMessage(
-          "Lo siento, ha ocurrido un error. Por favor, inténtalo de nuevo o contacta en el <strong>927 01 60 80</strong>.",
+          "Lo siento, ha ocurrido un error. Por favor, inténtalo de nuevo o contacta en el <strong>927 01 60 80</strong> / <a href=\"mailto:ies.albalat@edu.gobex.es\">ies.albalat@edu.gobex.es</a>.",
           "bot"
         );
       }
