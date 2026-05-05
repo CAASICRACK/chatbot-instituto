@@ -60,12 +60,25 @@ INSTRUCCIONES ESTRICTAS:
 - Si te preguntan sobre temas no cubiertos, responde: "Lo siento, no dispongo de esa información en este momento. Te recomiendo contactar directamente con el centro en el 927 01 60 80 o escribir a ies.albalat@edu.gobex.es. También puedes visitar nuestra web: https://iesnavalmoral.educarex.es."
 - Mantén un tono cálido y profesional, propio de un instituto educativo.`;
 
+// Headers CORS reutilizables en todas las respuestas
+const CORS_HEADERS = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+};
+
 exports.handler = async (event, context) => {
+  // Responder al preflight CORS que envían los navegadores antes del POST
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers: CORS_HEADERS, body: '' };
+  }
+
   // Solo aceptar POST
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
-      headers: { 'Content-Type': 'application/json' },
+      headers: CORS_HEADERS,
       body: JSON.stringify({ error: 'Method not allowed' }),
     };
   }
@@ -75,17 +88,18 @@ exports.handler = async (event, context) => {
     if (!message) {
       return {
         statusCode: 400,
-        headers: { 'Content-Type': 'application/json' },
+        headers: CORS_HEADERS,
         body: JSON.stringify({ error: 'Falta el campo "message"' }),
       };
     }
 
     // Llamada a la API de DeepSeek
+    // DEEPSEEK_API_KEY se configura en Netlify → Site Settings → Environment Variables
     const deepseekResponse = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.sk-d7f5b9ae0a784d9ba7d108ccb39ffa52}`,
+        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
       },
       body: JSON.stringify({
         model: 'deepseek-chat',
@@ -104,7 +118,7 @@ exports.handler = async (event, context) => {
       console.error('DeepSeek API error:', errorData);
       return {
         statusCode: 502,
-        headers: { 'Content-Type': 'application/json' },
+        headers: CORS_HEADERS,
         body: JSON.stringify({ error: 'Error al comunicarse con el asistente.' }),
       };
     }
@@ -114,17 +128,14 @@ exports.handler = async (event, context) => {
 
     return {
       statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
+      headers: CORS_HEADERS,
       body: JSON.stringify({ response: reply }),
     };
   } catch (error) {
     console.error('Error en la función:', error);
     return {
       statusCode: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: CORS_HEADERS,
       body: JSON.stringify({ error: 'Error interno del servidor.' }),
     };
   }
