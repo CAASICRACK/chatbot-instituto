@@ -1,5 +1,6 @@
 // netlify/functions/chat.js
-// Función serverless para Netlify. Requiere la variable de entorno DEEPSEEK_API_KEY.
+// Función serverless para Netlify usando OpenRouter con el modelo gratuito NVIDIA Nemotron.
+// Requiere la variable de entorno OPENROUTER_API_KEY en Netlify.
 
 const SYSTEM_PROMPT = `Eres el asistente virtual oficial del IES Albalat (Navalmoral de la Mata, Cáceres). Responde siempre de forma amable, clara y utilizando formato HTML básico (como <strong> para resaltar, <ul> y <li> para listas cuando sea apropiado, y <br> para saltos de línea) para que la respuesta se vea bien en el chat. NO uses Markdown, solo HTML.
 
@@ -93,29 +94,29 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Llamada a la API de DeepSeek
-    // DEEPSEEK_API_KEY se configura en Netlify → Site Settings → Environment Variables
-    const deepseekResponse = await fetch('https://api.deepseek.com/v1/chat/completions', {
+    // Llamada a la API de OpenRouter usando el modelo gratuito NVIDIA Nemotron
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'HTTP-Referer': event.headers.referer || 'https://iesnavalmoral.educarex.es',
+        'X-Title': 'Asistente IES Albalat',
       },
       body: JSON.stringify({
-        model: 'deepseek-chat',
+        model: 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free', // <--- Aquí el cambio
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: message },
         ],
         temperature: 0.3,
         max_tokens: 500,
-        stream: false,
       }),
     });
 
-    if (!deepseekResponse.ok) {
-      const errorData = await deepseekResponse.json();
-      console.error('DeepSeek API error:', errorData);
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('OpenRouter API error:', errorData);
       return {
         statusCode: 502,
         headers: CORS_HEADERS,
@@ -123,7 +124,7 @@ exports.handler = async (event, context) => {
       };
     }
 
-    const data = await deepseekResponse.json();
+    const data = await response.json();
     const reply = data.choices[0].message.content;
 
     return {
