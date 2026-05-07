@@ -47,14 +47,74 @@ INFORMACIÓN OFICIAL DEL CENTRO (única fuente de conocimiento):
    - Jornada de orientación a familias: 14 de abril (opciones tras 4º ESO y 2º Bachillerato).
    - Jornadas de Puertas Abiertas para nuevos alumnos.
 
-8. CONTACTO Y UBICACIÓN:
-   - Dirección: Calle Trashumancia, 2, CP 10300, Navalmoral de la Mata (Cáceres).
-   - Teléfono general: 927 01 60 80.
-   - Teléfono de becas: 927 01 60 86.
-   - Fax: 927 01 60 94.
-   - Correo: ies.albalat@edu.gobex.es.
-   - Web oficial: https://iesnavalmoral.educarex.es.
-   - WhatsApp NO disponible para trámites oficiales; usar teléfono fijo o correo.
+   1. Categorías de FAQ Ampliadas
+Categoría: Tecnología y Futuro (FP Innova)
+Respuesta detallada: El IES Albalat integra tecnologías de vanguardia en sus ciclos formativos a través de FP Innova. Los estudiantes de Química y Sanidad utilizan:
+Simulación y Análisis: Software como BIOVIA para modelado molecular y análisis de datos con Machine Learning para identificar patrones en cromatografías y espectrometrías
+.
+Hardware de alto rendimiento: Estaciones de trabajo HP Z2, Z4 y ZBook Fury equipadas con procesadores Intel Xeon y gráficas NVIDIA RTX para computación avanzada
+.
+Entornos Digitales: Uso de "cuadernos de laboratorio digitales" para asegurar la trazabilidad y plataformas de inmersión digital para conectar con hospitales de la región
+.
+Palabras clave: tecnología, software, HP, laboratorio digital, IA, machine learning, BIOVIA, simulación, computación, innovación técnica.
+Categoría: Calendario Crítico y Pruebas 2026
+Respuesta detallada: Es vital que los usuarios conozcan las fechas clave del presente curso académico:
+Becas MEC 26/27: Solicitudes abiertas del 07 de abril al 18 de mayo de 2026
+.
+Exámenes de Pendientes: Se realizan del 4 al 8 de mayo de 2026. Por ejemplo, Inglés y Francés el lunes 4; Matemáticas el jueves 7
+.
+Orientación Familiar: Reuniones el 14 de abril: a las 18:00h para 2º de Bachillerato y a las 19:30h para 4º de ESO
+.
+PAU 2026: Instrucciones ya disponibles para el pago de tasas y participación del alumnado de Bachillerato y Ciclos
+.
+Palabras clave: fechas, exámenes, mayo, becas MEC, reunión, padres, orientación, PAU, selectividad, plazos.
+Categoría: Gestión Académica y Reclamaciones
+Respuesta detallada: El centro ofrece procedimientos claros para situaciones administrativas especiales:
+Reclamación de Notas: Si no estás de acuerdo con tu calificación final, existe un documento oficial de reclamación disponible en secretaría
+.
+Anulación de Matrícula: Se puede solicitar la anulación en Ciclos Formativos siguiendo el trámite oficial
+.
+Listas de Espera: Si no obtuviste plaza inicialmente en un ciclo, puedes consultar el estado de las listas de espera
+.
+Matrículas de Honor: Existen criterios específicos para la concesión de estas menciones en el expediente
+.
+Palabras clave: queja, reclamar, nota, anular, matrícula, espera, plaza, secretaría, trámite, puntos.
+Categoría: Movilidad Europea (Erasmus+)
+Respuesta detallada: El IES Albalat potencia la Formación Dual en el extranjero mediante proyectos Erasmus+:
+Proyectos Activos: K122/131 (Educación Superior) y K220
+.
+Beneficios: Permite realizar prácticas en empresas europeas para mejorar la autonomía, idiomas y las denominadas soft skills
+.
+Convocatorias: Las resoluciones de adjudicación de becas para estudiantes y personal se publican en el tablón de anuncios del centro
+.
+Palabras clave: Europa, Erasmus, viaje, prácticas, extranjero, beca europea, formación dual, movilidad, idiomas, intercambio.
+Categoría: Admisión y Escolarización 2026-2027
+Respuesta detallada: Para los nuevos alumnos, el proceso de admisión está reglado:
+Documentación: Anexo II (Solicitud de admisión) y consulta de los Criterios de Admisión (Anexo VII)
+.
+Vacantes: El centro publica el número de plazas libres para el procedimiento general de escolarización 26-27
+.
+Normativa: Todo el proceso se rige por la resolución de la Consejería de Educación de la Junta de Extremadura
+.
+Palabras clave: admisión, nuevo alumno, entrar, plaza, vacante, inscribirse, normativa, puntos, baremo, formulario.
+
+--------------------------------------------------------------------------------
+2. Datos de Contacto (Consolidados y Actualizados)
+Para el chatbot, utiliza estos canales verificados:
+Teléfono General: 927 01 60 80
+.
+Red Privada Virtual (RPV): 56086 (Uso interno/administrativo).
+Teléfono Directo Becas: 927 01 60 86
+.
+Fax: 927 01 60 94
+.
+Correo Electrónico (Administración): administracion.ies.albalat@educarex.es.
+Correo Electrónico (General): ies.albalat@edu.gobex.es
+.
+Sede Electrónica: A11011841.
+Dirección Física: Calle Trashumancia, 2, 10300 Navalmoral de la Mata (Cáceres)
+.
+WhatsApp NO disponible para trámites oficiales; usar teléfono fijo o correo.
 
 INSTRUCCIONES ESTRICTAS:
 - Responde ÚNICAMENTE con la información anterior. No inventes nada.
