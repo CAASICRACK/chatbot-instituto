@@ -1,4 +1,4 @@
-// netlify/functions/chat.js
+// chat.js
 const SYSTEM_PROMPT = `Eres el asistente virtual oficial del IES Albalat (Navalmoral de la Mata, Cáceres). Responde siempre de forma amable, clara y utilizando formato HTML básico (como <strong> para resaltar, <ul> y <li> para listas cuando sea apropiado, y <br> para saltos de línea) para que la respuesta se vea bien en el chat. NO uses Markdown, solo HTML.
 
 INFORMACIÓN OFICIAL DEL CENTRO (única fuente de conocimiento):
@@ -95,35 +95,54 @@ async function chatHandler(req, res) {
     return res.status(400).json({ error: 'Falta el campo "message"' });
   }
 
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+  if (!GEMINI_API_KEY) {
+    return res.status(500).json({ error: 'Configuración del servidor incompleta.' });
+  }
+
+  // Modelo gratuito y con buen rendimiento
+  const model = 'gemini-2.0-flash';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
+
+  const requestBody = {
+    system_instruction: {
+      parts: { text: SYSTEM_PROMPT }
+    },
+    contents: [
+      {
+        parts: [{ text: message }]
+      }
+    ],
+    generationConfig: {
+      temperature: 0.3,
+      topP: 0.9,
+      maxOutputTokens: 1024
+    }
+  };
+
   try {
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        'HTTP-Referer': 'https://iesnavalmoral.educarex.es',
-        'X-Title': 'Asistente IES Albalat',
-      },
-      body: JSON.stringify({
-        model: 'google/gemma-4-31b-it:free',
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: message },
-        ],
-        temperature: 0.3,
-        top_p: 0.9,
-        max_tokens: 1024,
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('OpenRouter API error:', errorData);
+      console.error('Gemini API error:', errorData);
       return res.status(502).json({ error: 'Error al comunicarse con el asistente.' });
     }
 
     const data = await response.json();
-    const reply = data.choices[0].message.content;
+
+    // Extraer la respuesta del modelo
+    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!reply) {
+      console.error('Respuesta vacía o inesperada de Gemini:', data);
+      return res.status(502).json({ error: 'Respuesta inesperada del modelo.' });
+    }
+
     return res.status(200).json({ response: reply });
 
   } catch (error) {
