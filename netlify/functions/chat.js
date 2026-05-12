@@ -1,7 +1,4 @@
 // netlify/functions/chat.js
-// Función serverless para Netlify usando OpenRouter.
-// Requiere la variable de entorno OPENROUTER_API_KEY en Netlify.
-
 const SYSTEM_PROMPT = `Eres el asistente virtual oficial del IES Albalat (Navalmoral de la Mata, Cáceres). Responde siempre de forma amable, clara y utilizando formato HTML básico (como <strong> para resaltar, <ul> y <li> para listas cuando sea apropiado, y <br> para saltos de línea) para que la respuesta se vea bien en el chat. NO uses Markdown, solo HTML.
 
 INFORMACIÓN OFICIAL DEL CENTRO (única fuente de conocimiento):
@@ -43,7 +40,7 @@ INFORMACIÓN OFICIAL DEL CENTRO (única fuente de conocimiento):
    - Reclamación de notas: documento oficial disponible en secretaría.
    - Anulación de matrícula: trámite oficial disponible en secretaría.
    - Listas de espera: consulta de estado disponible en secretaría.
-   - Contacto secretaría: teléfono 927 01 60 80, correo ies.albalat@edu.gobex.es.
+   - Contacto: teléfono 927 01 60 80, correo ies.albalat@edu.gobex.es.
 
 7. TECNOLOGÍA Y FP INNOVA:
    - Software: BIOVIA para modelado molecular, Machine Learning para análisis de datos.
@@ -84,80 +81,55 @@ REGLA DE IDIOMA (aplica siempre):
 - No proporciones ninguna información del instituto en otro idioma que no sea el español.
 `;
 
-const CORS_HEADERS = {
-  'Content-Type': 'application/json',
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-};
-
-exports.handler = async (event, context) => {
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers: CORS_HEADERS, body: '' };
+async function chatHandler(req, res) {
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
   }
 
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      headers: CORS_HEADERS,
-      body: JSON.stringify({ error: 'Method not allowed' }),
-    };
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const { message } = req.body;
+  if (!message) {
+    return res.status(400).json({ error: 'Falta el campo "message"' });
   }
 
   try {
-    const { message } = JSON.parse(event.body);
-    if (!message) {
-      return {
-        statusCode: 400,
-        headers: CORS_HEADERS,
-        body: JSON.stringify({ error: 'Falta el campo "message"' }),
-      };
-    }
-
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        'HTTP-Referer': event.headers.referer || 'https://iesnavalmoral.educarex.es',
+        'HTTP-Referer': 'https://iesnavalmoral.educarex.es',
         'X-Title': 'Asistente IES Albalat',
       },
       body: JSON.stringify({
-        model: 'google/gemma-3-27b-it:free', // Cambiado: mejor seguimiento de instrucciones
+        model: 'google/gemma-4-31b-it:free',
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: message },
         ],
         temperature: 0.3,
-        top_p: 0.9,       // Añadido: estabiliza outputs en modelos gratuitos
-        max_tokens: 1024, // Aumentado: evita respuestas truncadas
+        top_p: 0.9,
+        max_tokens: 1024,
       }),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
       console.error('OpenRouter API error:', errorData);
-      return {
-        statusCode: 502,
-        headers: CORS_HEADERS,
-        body: JSON.stringify({ error: 'Error al comunicarse con el asistente.' }),
-      };
+      return res.status(502).json({ error: 'Error al comunicarse con el asistente.' });
     }
 
     const data = await response.json();
     const reply = data.choices[0].message.content;
+    return res.status(200).json({ response: reply });
 
-    return {
-      statusCode: 200,
-      headers: CORS_HEADERS,
-      body: JSON.stringify({ response: reply }),
-    };
   } catch (error) {
     console.error('Error en la función:', error);
-    return {
-      statusCode: 500,
-      headers: CORS_HEADERS,
-      body: JSON.stringify({ error: 'Error interno del servidor.' }),
-    };
+    return res.status(500).json({ error: 'Error interno del servidor.' });
   }
-};
+}
+
+module.exports = chatHandler;
