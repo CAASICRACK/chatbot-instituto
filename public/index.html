@@ -460,7 +460,7 @@ Estoy aquí para resolver tus dudas sobre carreras, trámites, becas y mucho má
     async function botReply(userInput) {
       showTyping();
       try {
-        const res = await fetch('/.netlify/functions/chat', {
+        const res = await fetch('/api/chat', {  // ← RUTA CORREGIDA
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: userInput }),
