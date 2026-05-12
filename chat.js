@@ -95,51 +95,46 @@ async function chatHandler(req, res) {
     return res.status(400).json({ error: 'Falta el campo "message"' });
   }
 
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-  if (!GEMINI_API_KEY) {
+  const GROQ_API_KEY = process.env.GROQ_API_KEY;
+  if (!GROQ_API_KEY) {
+    console.error('GROQ_API_KEY no configurada');
     return res.status(500).json({ error: 'Configuración del servidor incompleta.' });
   }
 
-  // Modelo gratuito y con buen rendimiento
-  const model = 'gemini-2.0-flash';
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
+  const url = 'https://api.groq.com/openai/v1/chat/completions';
 
   const requestBody = {
-    system_instruction: {
-      parts: { text: SYSTEM_PROMPT }
-    },
-    contents: [
-      {
-        parts: [{ text: message }]
-      }
+    model: 'llama-4-scout-17b-16e-instruct', // Modelo gratuito y rápido
+    messages: [
+      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'user', content: message }
     ],
-    generationConfig: {
-      temperature: 0.3,
-      topP: 0.9,
-      maxOutputTokens: 1024
-    }
+    temperature: 0.3,
+    top_p: 0.9,
+    max_tokens: 1024
   };
 
   try {
     const response = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GROQ_API_KEY}`
+      },
       body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('Gemini API error:', errorData);
+      console.error('Groq API error:', errorData);
       return res.status(502).json({ error: 'Error al comunicarse con el asistente.' });
     }
 
     const data = await response.json();
-
-    // Extraer la respuesta del modelo
-    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const reply = data?.choices?.[0]?.message?.content;
 
     if (!reply) {
-      console.error('Respuesta vacía o inesperada de Gemini:', data);
+      console.error('Respuesta vacía o inesperada de Groq:', data);
       return res.status(502).json({ error: 'Respuesta inesperada del modelo.' });
     }
 
