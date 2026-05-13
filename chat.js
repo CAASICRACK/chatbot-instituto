@@ -166,15 +166,9 @@ async function chatHandler(req, res) {
 
   // Lista de modelos gratuitos sin límite (se usan en orden, con fallback automático)
   const freeModels = [
-    "google/gemini-2.0-flash-exp:free",
-    "meta-llama/llama-4-maverick:free",
-    "mistralai/mistral-small-3.1-24b:free",
-    "qwen/qwen2.5-7b-instruct:free",
-    "deepseek/deepseek-r1-distill-qwen-32b:free",
-    "mistralai/mistral-nemo:free",
-    "nousresearch/deephermes-3-llama-3-8b:free",
-    "microsoft/phi-3-mini-128k-instruct:free",
-    "google/gemma-3-4b-it:free"
+     "meta-llama/llama-4-maverick:free",
+     "deepseek/deepseek-r1-distill-qwen-32b:free",
+     "google/gemma-4-31b-it:free"
   ];
 
   const requestBody = {
