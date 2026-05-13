@@ -168,7 +168,7 @@ async function chatHandler(req, res) {
   const freeModels = [
      "meta-llama/llama-4-maverick:free",
      "deepseek/deepseek-r1-distill-qwen-32b:free",
-     "google/gemma-4-31b-it:free"
+     "inclusionai/ring-2.6-1t:free"
   ];
 
   const requestBody = {
