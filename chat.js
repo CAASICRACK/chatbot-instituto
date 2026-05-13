@@ -155,23 +155,37 @@ async function chatHandler(req, res) {
     return res.status(400).json({ error: 'Falta el campo "message"' });
   }
 
+  // La variable se llama como antes, pero ahora contiene la API key de OpenRouter
   const GROQ_API_KEY = process.env.GROQ_API_KEY;
   if (!GROQ_API_KEY) {
-    console.error('GROQ_API_KEY no configurada');
+    console.error('GROQ_API_KEY (OpenRouter) no configurada');
     return res.status(500).json({ error: 'Configuración del servidor incompleta.' });
   }
 
-  const url = 'https://api.groq.com/openai/v1/chat/completions';
+  const url = 'https://openrouter.ai/api/v1/chat/completions';
+
+  // Lista de modelos gratuitos sin límite (se usan en orden, con fallback automático)
+  const freeModels = [
+    "google/gemini-2.0-flash-exp:free",
+    "meta-llama/llama-4-maverick:free",
+    "mistralai/mistral-small-3.1-24b:free",
+    "qwen/qwen2.5-7b-instruct:free",
+    "deepseek/deepseek-r1-distill-qwen-32b:free",
+    "mistralai/mistral-nemo:free",
+    "nousresearch/deephermes-3-llama-3-8b:free",
+    "microsoft/phi-3-mini-128k-instruct:free",
+    "google/gemma-3-4b-it:free"
+  ];
 
   const requestBody = {
-    model: 'llama-3.3-70b-versatile',
+    models: freeModels,            // Prueba en orden; OpenRouter gestiona failover
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: message }
     ],
     temperature: 0.3,
     top_p: 0.9,
-    max_tokens: 1024
+    max_tokens: 2048               // Aumentado un poco
   };
 
   try {
@@ -179,14 +193,16 @@ async function chatHandler(req, res) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROQ_API_KEY}`
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
+        'HTTP-Referer': 'https://iesnavalmoral.educarex.es',   // Requerido por OpenRouter
+        'X-Title': 'Chatbot IES Albalat'
       },
       body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('Groq API error:', errorData);
+      console.error('OpenRouter error:', errorData);
       return res.status(502).json({ error: 'Error al comunicarse con el asistente.' });
     }
 
@@ -194,7 +210,7 @@ async function chatHandler(req, res) {
     const reply = data?.choices?.[0]?.message?.content;
 
     if (!reply) {
-      console.error('Respuesta vacía o inesperada de Groq:', data);
+      console.error('Respuesta vacía de OpenRouter:', data);
       return res.status(502).json({ error: 'Respuesta inesperada del modelo.' });
     }
 
