@@ -167,7 +167,7 @@ async function chatHandler(req, res) {
   // Lista de modelos gratuitos sin límite (se usan en orden, con fallback automático)
   const freeModels = [
      "openrouter/owl-alpha",
-     "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+     "google/gemma-4-26b-a4b-it:free",
      "inclusionai/ring-2.6-1t:free"
   ];
 
